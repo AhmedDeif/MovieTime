@@ -10,13 +10,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -82,6 +78,7 @@ public class MovieDetailActivityFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
     public View phoneCreateView(View rootView){
 
         final Intent intent = this.getActivity().getIntent();
@@ -120,7 +117,6 @@ public class MovieDetailActivityFragment extends Fragment {
                 Bitmap theImage = BitmapFactory.decodeStream(imageStream);
                 DatabaseHandler db = new DatabaseHandler(mContext);
                 db.addMovie(tmp);
-                Log.e("Add to DB" , "Successful");
             }
         });
         String[] params = {"hi"};
@@ -137,7 +133,6 @@ public class MovieDetailActivityFragment extends Fragment {
         else {
             ImageView image = (ImageView) rootView.findViewById(R.id.imageView);
             Picasso.with(mContext).load(intent.getStringExtra("moviePoster")).into(image);
-            // tablet i get empty intent so params null so everything breaks
             params[0] = intent.getStringExtra("id");
             GetMovieDetailsApiRequest task = (GetMovieDetailsApiRequest) new GetMovieDetailsApiRequest().execute(params);
         }
@@ -157,69 +152,6 @@ public class MovieDetailActivityFragment extends Fragment {
         if(!isTablet(mContext))
             rootView = phoneCreateView(rootView);
 
-        //  if tablet
-
-        /*
-        final Intent intent = this.getActivity().getIntent();
-        // setting movie title
-        TextView movieTitle = (TextView) rootView.findViewById(R.id.movieTitle);
-        movieTitle.setText("\t"+intent.getStringExtra("movieTitle"));
-        // setting movie rating
-        TextView movieRating = (TextView) rootView.findViewById(R.id.ratingText);
-        movieRating.setText(intent.getStringExtra("movieRating"));
-        // setting imageView
-
-        //ImageView image = (ImageView) findViewById(R.id.imageView);
-        //Picasso.with(this.getBaseContext()).load(intent.getStringExtra("moviePoster")).into(image);
-        // setting movie date
-        TextView movieDate = (TextView) rootView.findViewById(R.id.movieProductionYear);
-        movieDate.setText(intent.getStringExtra("movieDate"));
-        //setting movie description
-        TextView movieDescription = (TextView) rootView.findViewById(R.id.movieDescription);
-        movieDescription.setText(intent.getStringExtra("description"));
-
-
-        Button bt = (Button) rootView.findViewById(R.id.favouriteButton);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //  insert into db
-                Movie tmp = new Movie();
-                tmp.setMovieId(intent.getStringExtra("id"));
-                tmp.setOverview(intent.getStringExtra("description"));
-                tmp.setRealseDate(intent.getStringExtra("movieDate"));
-                tmp.setRating(intent.getStringExtra("movieRating"));
-                tmp.setTitle(intent.getStringExtra("movieTitle"));
-                tmp._image = intent.getByteArrayExtra("image");
-                // try creating a bitmap here to see the byte arry from intent
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(tmp._image);
-                Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-                DatabaseHandler db = new DatabaseHandler(mContext);
-                db.addMovie(tmp);
-                Log.e("Add to DB" , "Successful");
-            }
-        });
-
-
-        String[] params = {"hi"};
-        if(mSharedPrefs.getString(getString(R.string.pref_sort_key),
-                getString(R.string.pref_sort_label_popular)).
-                equals(getString(R.string.pref_sort_fav))){
-            ByteArrayInputStream imageStream = new ByteArrayInputStream(intent.getByteArrayExtra("image"));
-            Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-            ImageView image = (ImageView) rootView.findViewById(R.id.imageView);
-            image.setImageBitmap(theImage);
-            params[0] = intent.getStringExtra("id");
-            GetMovieDetailsApiRequest task = (GetMovieDetailsApiRequest) new GetMovieDetailsApiRequest().execute(params);
-        }
-        else {
-            ImageView image = (ImageView) rootView.findViewById(R.id.imageView);
-            Picasso.with(mContext).load(intent.getStringExtra("moviePoster")).into(image);
-            // tablet i get empty intent so params null so everything breaks
-            params[0] = intent.getStringExtra("id");
-            GetMovieDetailsApiRequest task = (GetMovieDetailsApiRequest) new GetMovieDetailsApiRequest().execute(params);
-        }*/
-
         return rootView;
     }
 
@@ -229,8 +161,6 @@ public class MovieDetailActivityFragment extends Fragment {
         inflater.inflate(R.menu.detailfragment, menu);
         MenuItem menuItem = menu.findItem(R.id.action_share);
         mShareActionProvider = (android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-        //mShareActionProvider.setShareIntent(createShareForecastIntent());
-        Log.e("share provider","intialised");
     }
 
     @Override
@@ -278,7 +208,6 @@ public class MovieDetailActivityFragment extends Fragment {
         final String apiKey = getString(R.string.api_key);
         String movieID = "";
 
-        String LOG_TAG = GetMovieDetailsApiRequest.class.getSimpleName();
         private BufferedReader bufferedReader = null;
         private HttpURLConnection urlConnection = null;
 
@@ -291,10 +220,8 @@ public class MovieDetailActivityFragment extends Fragment {
                     appendEncodedPath(reviews).
                     appendQueryParameter(API_KEY,apiKey).
                     build();
-            Log.e("gettin reviews",uri.toString());
             URL url = null;
             try {
-                Log.e("url",uri.toString());
                 url = new URL(uri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -334,7 +261,6 @@ public class MovieDetailActivityFragment extends Fragment {
                     appendQueryParameter(API_KEY,apiKey).build();
             URL url = null;
             try {
-                Log.e("url",uri.toString());
                 url = new URL(uri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -375,8 +301,6 @@ public class MovieDetailActivityFragment extends Fragment {
 
         @Override
         protected Void doInBackground(String... params) {
-            if(params[0].equals("do"))
-                Log.e("ayway yasya","aaaaaaaaa");
             getTrailers(params[0]);
             getMovieReviews(params[0]);
             movieID = params[0];
@@ -391,7 +315,6 @@ public class MovieDetailActivityFragment extends Fragment {
             Trailer trailer;
             for (int i=0; i<results.length();i++){
                 JSONObject tempJSON = results.getJSONObject(i);
-                // Log.e("JSON object array " + i,tempJSON.toString());
                 trailer = new Trailer();
                 trailer.setURL(tempJSON.getString("key"));
                 trailerList.add(trailer);
@@ -404,13 +327,11 @@ public class MovieDetailActivityFragment extends Fragment {
             MovieReview review;
             for (int i=0; i<results.length();i++){
                 JSONObject tempJSON = results.getJSONObject(i);
-                // Log.e("JSON object array " + i,tempJSON.toString());
                 review = new MovieReview();
                 review.setAuthorName(tempJSON.getString("author"));
                 review.setReviewBody(tempJSON.getString("content"));
                 reviewsList.add(review);
             }
-
         }
 
         @Override
@@ -429,14 +350,12 @@ public class MovieDetailActivityFragment extends Fragment {
                 ib.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        //Toast.makeText(MovieDetailActivity.this,tempTrailer.getURL(),Toast.LENGTH_SHORT).show();
                         Uri webpage = Uri.parse(tempTrailer.getURL());
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(webpage);
                         if (intent.resolveActivity(mPackageManger) != null) {
                             startActivity(intent);
                         }
-
                     }
                 });
 
@@ -448,7 +367,6 @@ public class MovieDetailActivityFragment extends Fragment {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());
             }else{mMovieString = null;}
 
-            // Get Reviews
             LayoutInflater vil = (LayoutInflater) mContext.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout li = (LinearLayout) mActivity.findViewById(R.id.movie_detail);

@@ -1,39 +1,21 @@
 package ahmedabodeif.movietime;
 
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,47 +31,38 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-import java.util.ArrayList;
-
-
-
-interface Callback {
-    public void onItemSelected();
-}
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
 
+    static int i = 0;
+    SharedPreferences mSharedPrefs;
+    Context mCotext;
+    boolean mTwoPane = false;
+    String DETAILFRAGMENT_TAG = "DF";
+    View rootView;
     private GridView movieGrid;
     private GridAdapter gridAdapter;
     private ArrayList<Movie> gridData = new ArrayList<Movie>();
     private ProgressBar mProgressBar;
     private String oldSetting;
-    SharedPreferences mSharedPrefs ;
-    Context mCotext;
-    static int i =0;
-    boolean mTwoPane = false;
-    String DETAILFRAGMENT_TAG = "DF";
-    View rootView;
 
 
     public MainActivityFragment() {
+    }
+
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-
-
-    public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     // Creates intent with required movie data attached.
@@ -236,7 +209,6 @@ public class MainActivityFragment extends Fragment {
             startActivity(new Intent(this.getActivity(), SettingsActivity.class));
         }
 
-        //  might be unnecessary and will remove before comitting on github.
         if(id == R.id.refresh) {
             movieGrid.invalidateViews();
             gridData = new ArrayList<Movie>();
@@ -253,8 +225,6 @@ public class MainActivityFragment extends Fragment {
                     startDetailActivity(position);
                 }
             });
-            //apiRequest api = new apiRequest();
-            //api.execute();
             mProgressBar.setVisibility(View.VISIBLE);
         }
 
@@ -276,7 +246,6 @@ public class MainActivityFragment extends Fragment {
         final String API_KEY = "api_key";
         final String apiKey = getString(R.string.api_key);
 
-        String LOG_TAG = FetChMoviesApiRequest.class.getSimpleName();
         private BufferedReader bufferedReader = null;
         private HttpURLConnection urlConnection = null;
 
@@ -367,7 +336,7 @@ public class MainActivityFragment extends Fragment {
                 e.printStackTrace();
                 result =  0;
             }
-            Log.e(LOG_TAG,uri.toString());
+
             result = 1;
             return result;
         }
@@ -379,7 +348,6 @@ public class MainActivityFragment extends Fragment {
             Movie movie;
             for (int i=0; i<results.length();i++){
                 JSONObject tempJSON = results.getJSONObject(i);
-                // Log.e("JSON object array " + i,tempJSON.toString());
                 movie = new Movie();
                 movie.setTitle(tempJSON.getString("original_title"));
                 movie.setPosterURL(tempJSON.getString("poster_path"));
@@ -387,8 +355,6 @@ public class MainActivityFragment extends Fragment {
                 movie.setRealseDate(tempJSON.getString("release_date"));
                 movie.setRating(tempJSON.getString("vote_average"));
                 movie.setMovieId(tempJSON.getString("id"));
-                //Bitmap bt = Picasso.with(MainActivity.this).load(movie.getPosterURL()).get();
-                //movie.setMoviePoster(bt);
                 gridData.add(movie);
             }
         }
@@ -398,8 +364,6 @@ public class MainActivityFragment extends Fragment {
             // Download complete. Let us update UI
             if (result == 1) {
                 gridAdapter.setGridData(gridData);
-            } else {
-                //Toast.makeText(MainActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }
             mProgressBar.setVisibility(View.GONE);
         }
