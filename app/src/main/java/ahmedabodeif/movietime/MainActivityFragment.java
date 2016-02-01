@@ -31,10 +31,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-
-/**
- * A placeholder fragment containing a simple view.
- */
 public class MainActivityFragment extends Fragment {
 
     static int i = 0;
