@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ahmedabodeif.movietime.MovieDetailActivityFragment"
+    tools:showIn="@layout/activity_movie_detail"
+    android:theme="@android:style/Theme.WithActionBar"
+    android:backgroundTint="#353333"
+    android:background="#454242"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="36dp"
+        android:id="@+id/movie_detail">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="   Chappie"
+            android:id="@+id/movieTitle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#09aa7c"
+            android:elegantTextHeight="false"
+            android:singleLine="false"
+            android:textColor="#fbffffff"
+            />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:paddingTop="30dp"
+                android:layout_width="150dp"
+                android:layout_height="250dp"
+                android:id="@+id/imageView"
+                android:src="@drawable/starwars"
+                android:scaleType="fitXY"
+                android:layout_below="@+id/movieTitle"
+                android:layout_alignLeft="@+id/movieTitle"
+                android:layout_alignStart="@+id/movieTitle"
+                android:layout_marginLeft="20dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="2015"
+                    android:id="@+id/movieProductionYear"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="40dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="8.1/10"
+                    android:id="@+id/ratingText"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mark as Favourite"
+                    android:id="@+id/favouriteButton"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="text"
+            android:id="@+id/movieDescription"
+            android:layout_below="@+id/imageView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"
+            android:layout_margin="25dp"/>
+
+
+    </LinearLayout>
+
+
+</ScrollView>
