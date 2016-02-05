@@ -82,7 +82,7 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mCotext = this.getContext();
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mCotext);
         oldSetting = mSharedPrefs.getString(getString(R.string.pref_sort_key),
@@ -221,6 +221,8 @@ public class MainActivityFragment extends Fragment {
                     startDetailActivity(position);
                 }
             });
+            FetChMoviesApiRequest api = new FetChMoviesApiRequest();
+            api.execute();
             mProgressBar.setVisibility(View.VISIBLE);
         }
 
